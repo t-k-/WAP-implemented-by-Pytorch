@@ -30,9 +30,9 @@ if multi_gpu_flag:
     batch_size = 24
     valid_batch_size = 24
 else:
-    batch_Imagesize = 320000
-    maxImagesize = 320000
-    valid_batch_Imagesize = 320000
+    batch_Imagesize = 160000
+    maxImagesize = 160000
+    valid_batch_Imagesize = 160000
     batch_size = 8
     valid_batch_size = 8
 maxlen = 200
@@ -108,7 +108,7 @@ criterion = torch.nn.CrossEntropyLoss(reduce=False)
 # optimizer
 optimizer = optim.Adadelta(WAP_model.parameters(), lr=lrate, eps=my_eps, weight_decay=decay_c)
 
-print('Optimization')
+print('Optimization, batch_size:', batch_size)
 
 # statistics
 history_errs = []
