@@ -45,8 +45,15 @@ class Gru_cond_layer(nn.Module):
         if one_step:
             if mask is None:
                 mask = torch.ones(embedding.shape[0]).cuda()
-            h2ts, cts, alphas, alpha_pasts = self._step_slice(mask, state_below_r, state_below_z, state_below_h,
-                                                              init_state, context, context_mask, alpha_past, Ua_ctx)
+            h2ts, cts, alphas, alpha_pasts = self._step_slice(
+                    mask,
+                    state_below_r, state_below_z, state_below_h,
+                    init_state,
+                    context,
+                    context_mask,
+                    alpha_past,
+                    Ua_ctx
+                )
         else:
             alpha_past = torch.zeros(n_samples, context.shape[2], context.shape[3]).cuda()
             h2t = init_state
@@ -55,9 +62,15 @@ class Gru_cond_layer(nn.Module):
             alphas = (torch.zeros(n_steps, n_samples, context.shape[2], context.shape[3])).cuda()
             alpha_pasts = torch.zeros(n_steps, n_samples, context.shape[2], context.shape[3]).cuda()
             for i in range(n_steps):
-                h2t, ct, alpha, alpha_past = self._step_slice(mask[i], state_below_r[i], state_below_z[i],
-                                                              state_below_h[i], h2t, context, context_mask, alpha_past,
-                                                              Ua_ctx)
+                h2t, ct, alpha, alpha_past = self._step_slice(
+                    mask[i],
+                    state_below_r[i], state_below_z[i], state_below_h[i],
+                    h2t,
+                    context,
+                    context_mask,
+                    alpha_past,
+                    Ua_ctx
+                )
                 h2ts[i] = h2t
                 cts[i] = ct
                 alphas[i] = alpha
@@ -65,7 +78,15 @@ class Gru_cond_layer(nn.Module):
         return h2ts, cts, alphas, alpha_pasts
 
     # one step of two GRU layers
-    def _step_slice(self, mask, state_below_r, state_below_z, state_below_h, h, ctx, ctx_mask, alpha_past, Ua_ctx):
+    def _step_slice(self,
+        mask,
+        state_below_r, state_below_z, state_below_h,
+        h,
+        ctx,
+        ctx_mask,
+        alpha_past,
+        Ua_ctx
+    ):
         # the first GRU layer
         z1 = torch.sigmoid(self.fc_Uhz(h) + state_below_z)
         r1 = torch.sigmoid(self.fc_Uhr(h) + state_below_r)

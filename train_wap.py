@@ -30,11 +30,11 @@ if multi_gpu_flag:
     batch_size = 24
     valid_batch_size = 24
 else:
-    batch_Imagesize = 160000
-    maxImagesize = 160000
-    valid_batch_Imagesize = 160000
-    batch_size = 8
-    valid_batch_size = 8
+    batch_Imagesize = 320000
+    maxImagesize = 320000
+    valid_batch_Imagesize = 320000
+    batch_size = 1
+    valid_batch_size = 1
 maxlen = 200
 max_epochs = 5000
 lrate = 1.0
@@ -135,7 +135,7 @@ for eidx in range(max_epochs):
 
         # forward
         scores, alphas = WAP_model(params, x, x_mask, y, y_mask)
-        
+
         # recover from permute
         alphas = alphas.permute(1, 0, 2, 3)
         scores = scores.permute(1, 0, 2)
