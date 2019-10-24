@@ -108,7 +108,7 @@ criterion = torch.nn.CrossEntropyLoss(reduce=False)
 # optimizer
 optimizer = optim.Adadelta(WAP_model.parameters(), lr=lrate, eps=my_eps, weight_decay=decay_c)
 
-print('Optimization, batch_size:', batch_size)
+print('batch_size:', batch_size, 'samples:', len(train))
 
 # statistics
 history_errs = []
@@ -162,6 +162,8 @@ for eidx in range(max_epochs):
 
         ud = time.time() - ud_start
         ud_s += ud
+
+        # print(uidx, loss.item())
 
         # display
         if np.mod(uidx, dispFreq) == 0:
